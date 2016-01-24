@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE note SYSTEM "3_1_sample.dtd">
-<note transport_medium="e-mail">
-   <to>Tove</to>
-   <from>Jani</from>
-   <heading>Reminder</heading>
-   <body>Shots tonight &lt;</body>
-</note> 
