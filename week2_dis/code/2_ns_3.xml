@@ -1,0 +1,17 @@
+<students xmlns="www.student.com/university/"
+		xmlns:col="www.student.com/university/college/"
+		xmlns:hs="www.student.com/university/grad_school/">
+	<col:student>
+	  <col:id>3235329</col:id>
+	  <col:name>Jeff Smith</col:name>
+	  <col:language>C#</col:language>
+	  <col:rating>9.5</col:rating>
+	</col:student>
+
+	<hs:student>
+	  <hs:id>534-22-5252</hs:id>
+	  <hs:name>Jill Smith</hs:name>
+	  <hs:language>Spanish</hs:language>
+	  <hs:rating>3.2</hs:rating>
+	</hs:student>
+</students>

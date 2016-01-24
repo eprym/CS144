@@ -1,0 +1,12 @@
+<!ELEMENT Bookstore (Book*, Author*)>
+<!ELEMENT Book (Title, Remark?)>
+<!ATTLIST Book ISBN ID #REQUIRED 
+			Price CDATA #REQUIRED 	
+			Ed CDATA #IMPLIED 
+			Authors IDREFS #REQUIRED>
+<!ELEMENT Title (#PCDATA)>
+<!ELEMENT Remark (#PCDATA)>
+<!ELEMENT Author (#PCDATA | First_Name | Last_Name)*>
+<!ATTLIST Author Ident ID #REQUIRED>
+<!ELEMENT First_Name (#PCDATA)>
+<!ELEMENT Last_Name (#PCDATA)>
