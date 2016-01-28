@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="project2">
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="src-dir" location="src" />
+    <property name="obj-dir" location="bin" />
+    <property name="lib-dir" location="lib" />
+    <property environment="env" />
+    <path id="classpath">
+        <fileset dir="${lib-dir}" includes="**/*.jar"/>
+        <pathelement location="${obj-dir}"/>
+    </path>
+
+    <target name="init">
+        <mkdir dir="${obj-dir}"/>
+        <mkdir dir="${lib-dir}"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${obj-dir}"/>
+    </target>
+
+    <!-- compile parser code -->
+    <target name="compile" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" includeantruntime="false" srcdir="${src-dir}" destdir="${obj-dir}" includes="edu/ucla/cs/cs144/*.java">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>    
+
+    <!-- run MyParser on $EBAY_DATA/items-0.xml -->
+    <target name="run" depends="compile">
+        <java classname="edu.ucla.cs.cs144.MyParser" failonerror="true" fork="yes">
+            <classpath refid="classpath"/>
+            <arg value="${env.EBAY_DATA}/items-0.xml" />
+        </java>
+    </target>
+
+    <!-- run MyParser on all files at $EBAY_DATA/items-*.xml -->
+    <target name="run-all" depends="compile">
+        <!-- set the property "ebaydata" to the space-separated list of files
+             at $EBAY_DATA/items-*.xml" -->
+        <fileset id="ebay.files" dir="${env.EBAY_DATA}" includes="items-*.xml"/>
+        <pathconvert property="ebaydata" pathsep=" " refid="ebay.files" />
+        <java classname="edu.ucla.cs.cs144.MyParser" failonerror="true" fork="yes">
+            <!-- pass the list of ebay data files as command line argument -->
+            <arg line="${ebaydata}" />
+            <classpath refid="classpath"/>
+        </java>
+    </target>
+
+</project>
