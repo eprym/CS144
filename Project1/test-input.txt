@@ -1,0 +1,1 @@
+A simple test input file to check ComputeSHA
