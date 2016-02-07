@@ -58,14 +58,17 @@ public class AuctionSearch implements IAuctionSearch {
 			SearchEngine searchEngine = new SearchEngine();
 			topDocs=searchEngine.performSearch(query,numResultsToReturn+numResultsToSkip);
 			ScoreDoc[] scoreDocs=topDocs.scoreDocs;
-			SearchResult[] r=new SearchResult[numResultsToReturn];
+			System.out.println("ScoreDoc.length:"+scoreDocs.length);
+			SearchResult[] r=new SearchResult[Math.min(scoreDocs.length-numResultsToSkip,numResultsToReturn)];
 			for(int i=numResultsToSkip;i<scoreDocs.length;++i){
 				Document doc=searchEngine.getDocument(scoreDocs[i].doc);
 				String itemID=doc.get("ItemID");
 				String itemName=doc.get("ItemName");
-				r[i-numResultsToSkip]=new SearchResult(itemID,itemName);
-				return r;
+				SearchResult cur=new SearchResult(itemID,itemName);
+//				cur.show();
+				r[i-numResultsToSkip]=cur;
 			}
+			return r;
 		}catch (IOException ex){
 			ex.printStackTrace();
 		}catch (ParseException ex){

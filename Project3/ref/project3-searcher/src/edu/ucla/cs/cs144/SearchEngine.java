@@ -41,7 +41,7 @@ public class SearchEngine {
     
     /** Creates a new instance of SearchEngine */
     public SearchEngine() throws IOException {
-        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory"))));
+        searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("/var/lib/lucene/index1/"))));
         parser = new QueryParser("Content", new StandardAnalyzer());
     }
     

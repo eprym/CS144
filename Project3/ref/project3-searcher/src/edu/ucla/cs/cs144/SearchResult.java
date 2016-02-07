@@ -26,4 +26,8 @@ public class SearchResult {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public void show(){
+		System.out.println("ItemID:"+itemId+",Name:"+name);
+	}
 }

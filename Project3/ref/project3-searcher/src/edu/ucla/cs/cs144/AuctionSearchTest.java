@@ -16,13 +16,14 @@ public class AuctionSearchTest {
 		String reply = as.echo(message);
 		System.out.println("Reply: " + reply);
 		
-		String query = "superman";
-		SearchResult[] basicResults = as.basicSearch(query, 0, 20);
+		String query = "kitchenware";
+		SearchResult[] basicResults = as.basicSearch(query, 0, 2000);
 		System.out.println("Basic Seacrh Query: " + query);
 		System.out.println("Received " + basicResults.length + " results");
-		for(SearchResult result : basicResults) {
-			System.out.println(result.getItemId() + ": " + result.getName());
-		}
+//		for(SearchResult result : basicResults) {
+//			System.out.println(result.getItemId() + ": " + result.getName());
+//		}
+		System.out.println(basicResults.length);
 		
 		SearchRegion region =
 		    new SearchRegion(33.774, -118.63, 34.201, -117.38); 

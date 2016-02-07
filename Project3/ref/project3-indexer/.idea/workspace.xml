@@ -23,11 +23,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Indexer.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Indexer.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/edu/ucla/cs/cs144/Indexer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.4218488">
+            <state vertical-scroll-proportion="0.0">
               <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <marker date="1454827765470" expanded="true" signature="2103:2164" placeholder="select ItemI..Items..." />
+                <marker date="1454827765470" expanded="true" signature="2195:2235" placeholder="select * fro..Categories..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Indexer.java" pinned="false" current-in-tab="true">
+        <entry file="file://C:/vm-shared/project3/src/edu/ucla/cs/cs144/Indexer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.68403363">
+              <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <marker date="1454827765470" expanded="true" signature="2103:2164" placeholder="select ItemI..Items..." />
@@ -77,6 +91,7 @@
         <option value="$PROJECT_DIR$/src/edu/ucla/cs/cs144/SearchEngine.java" />
         <option value="$PROJECT_DIR$/src/edu/ucla/cs/cs144/Main.java" />
         <option value="$PROJECT_DIR$/src/edu/ucla/cs/cs144/Indexer.java" />
+        <option value="C:/vm-shared/project3/src/edu/ucla/cs/cs144/Indexer.java" />
       </list>
     </option>
   </component>
@@ -115,6 +130,9 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -171,9 +189,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -463,11 +478,12 @@
       <workItem from="1454818509246" duration="1593000" />
       <workItem from="1454821986966" duration="4597000" />
       <workItem from="1454827753948" duration="23000" />
+      <workItem from="1454827929404" duration="698000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16453000" />
+    <option name="totallyTimeSpent" value="17151000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1764" height="1398" extended-state="0" />
@@ -520,6 +536,34 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/edu/ucla/cs/cs144/Indexer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1454827765470" expanded="true" signature="2103:2164" placeholder="select ItemI..Items..." />
+            <marker date="1454827765470" expanded="true" signature="2195:2235" placeholder="select * fro..Categories..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/ucla/cs/cs144/DbManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="27" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/ucla/cs/cs144/Indexer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -777,7 +821,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.09243698">
           <caret line="5" column="73" selection-start-line="5" selection-start-column="73" selection-end-line="5" selection-end-column="73" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -791,8 +834,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/ucla/cs/cs144/Indexer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.4218488">
+        <state vertical-scroll-proportion="0.0">
           <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1454827765470" expanded="true" signature="2103:2164" placeholder="select ItemI..Items..." />
+            <marker date="1454827765470" expanded="true" signature="2195:2235" placeholder="select * fro..Categories..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/vm-shared/project3/src/edu/ucla/cs/cs144/Indexer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.68403363">
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <marker date="1454827765470" expanded="true" signature="2103:2164" placeholder="select ItemI..Items..." />
