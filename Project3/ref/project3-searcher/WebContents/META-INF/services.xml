@@ -1,0 +1,14 @@
+<service name="AuctionSearchService" scope="application">
+    <description>eBay auction data search service</description>
+    <parameter name="ServiceClass" locked="false">edu.ucla.cs.cs144.AuctionSearch</parameter>
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-only"
+                         class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </messageReceivers>
+    <operation name="echo" mep="http://www.w3.org/2004/08/wsdl/in-out" />
+    <operation name="basicSearch" mep="http://www.w3.org/2004/08/wsdl/in-out" />
+    <operation name="advancedSearch" mep="http://www.w3.org/2004/08/wsdl/in-out" />
+    <operation name="getXMLDataForItemId" mep="http://www.w3.org/2004/08/wsdl/in-out" />
+</service>

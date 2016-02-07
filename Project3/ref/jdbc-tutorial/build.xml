@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="jdbc-demo">
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="src-dir" location="src" />
+    <property name="obj-dir" location="bin" />
+    <property name="lib-dir" location="lib" />
+    <path id="classpath">
+        <fileset dir="${lib-dir}" includes="**/*.jar"/>
+        <fileset dir="/usr/share/java" includes="**/*.jar"/>
+        <pathelement location="${obj-dir}"/>
+    </path>
+
+    <target name="init">
+		<mkdir dir="${obj-dir}" />
+		<mkdir dir="${lib-dir}" />
+    </target>
+
+    <target name="clean">
+		<delete dir="${obj-dir}" />
+		<delete dir="index" />
+    </target>
+
+    <target name="compile" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" includeantruntime="false" srcdir="${src-dir}" destdir="${obj-dir}" includes="**/*.java">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>    
+
+    <target name="run" depends="compile">
+        <java classname="accessDatabase" failonerror="true" fork="yes">
+            <classpath refid="classpath"/>
+        </java>
+    </target>
+</project>
