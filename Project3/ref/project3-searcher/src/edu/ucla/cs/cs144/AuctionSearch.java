@@ -98,11 +98,15 @@ public class AuctionSearch implements IAuctionSearch {
 		}
 
 		Connection conn=null;
+		double lx=region.getLx(),ly=region.getLy(),rx=region.getRx(),ry=region.getRy();
 		String spatialQuery="select ItemID,ItemName,AsText(Coordinate)" +
-				"from "
+				"from ItemSpatial where within(Coordinate,GeomFromText(" +
+				"'Polygon(("+lx+" "+ly+","+lx+" "+ry+","+rx+" "+ry+","
+				+rx+" "+ly+","+lx+" "+ly+"))')) order by ItemID;";
 		try{
 			conn=DbManager.getConnection(true);
 			Statement stmt=conn.createStatement();
+			ResultSet rs=stmt.executeQuery(spatialQuery);
 		}catch (SQLException ex){
 			ex.printStackTrace();
 		}

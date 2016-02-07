@@ -42,7 +42,7 @@ public class SearchEngine {
     /** Creates a new instance of SearchEngine */
     public SearchEngine() throws IOException {
         searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("index-directory"))));
-        parser = new QueryParser("content", new StandardAnalyzer());
+        parser = new QueryParser("Content", new StandardAnalyzer());
     }
     
     public TopDocs performSearch(String queryString, int n)
