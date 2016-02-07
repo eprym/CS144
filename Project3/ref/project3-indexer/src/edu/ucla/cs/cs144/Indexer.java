@@ -62,11 +62,37 @@ public class Indexer {
 		//get data from RDBS
 		try {
 			Statement stmt=conn.createStatement();
-			String selectItems="select ItemID,ItemName,Description from Items";
-			String selectCategories="select * from Categories";
+			String selectItems="select ItemID,ItemName,Description from Items order by ItemID";
+			String selectCategories="select * from Categories order by ItemID";
 //			PreparedStatement select=conn.prepareStatement("SELECT ? FROM ?");
 			ResultSet nameDescriptions = stmt.executeQuery(selectItems);
 			ResultSet categories = stmt.executeQuery(selectCategories);
+
+			//build the indexWriter
+			Directory indexDir = FSDirectory.open(new File("/var/lib/lucene/index1/"));
+			IndexWriterConfig iwConfig = new IndexWriterConfig(Version.LUCENE_4_10_2, new StandardAnalyzer());
+			indexWriter = new IndexWriter(indexDir, iwConfig);
+			while(true) {
+				String curID=nameDescriptions.getString("ItemID");
+				Document doc = new Document();
+				doc.add(new StringField("ItemID", curID, Field.Store.YES));
+				doc.add(new TextField("ItemName",nameDescriptions.getString("ItemName"),Field.Store.YES));
+				doc.add(new TextField("Description",nameDescriptions.getString("Description"), Field.Store.NO));
+				StringBuilder fullContent=new StringBuilder();
+				fullContent.append(nameDescriptions.getString("ItemName"));
+				fullContent.append(" "+nameDescriptions.getString("Description"));
+				StringBuilder allCategories=new StringBuilder();
+				while(categories.getString("ItemID").equals(curID)){
+					allCategories.append(categories.getString("Category"+" "));
+					if(!categories.next())break;
+				}
+				if(!categories.getString("ItemID").equals(curID))categories.previous();
+				doc.add(new TextField("Categories",allCategories.toString(),Field.Store.NO));
+				fullContent.append(" "+allCategories.toString());
+				doc.add(new TextField("Content",fullContent.toString(), Field.Store.NO));
+				indexWriter.addDocument(doc);
+				if(!nameDescriptions.next())break;
+			}
 		}catch(SQLException ex){
 			System.out.println("SQLException caught");
 			System.out.println("---");
@@ -77,21 +103,11 @@ public class Indexer {
 				System.out.println("---");
 				ex = ex.getNextException();
 			}
-		}
-		//build the indexWriter
-
-		try {
-			Directory indexDir = FSDirectory.open(new File("/var/lib/lucene/index1/"));
-			IndexWriterConfig iwConfig = new IndexWriterConfig(Version.LUCENE_4_10_2, new StandardAnalyzer());
-			indexWriter = new IndexWriter(indexDir, iwConfig);
-
-			Document doc=new Document();
-			doc.add(new TextField("as","as",Field.Store.YES));
-			indexWriter.addDocument(doc);
-
 		}catch (IOException ex){
 			ex.printStackTrace();
 		}
+		//build the indexWriter
+
 		//close the indexWriter
 		try{
 			if(indexWriter!=null)indexWriter.close();
