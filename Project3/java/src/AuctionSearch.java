@@ -1,20 +1,24 @@
-package edu.ucla.cs.cs144;
+//package edu.ucla.cs.cs144;
 
-import java.util.*;
 import java.io.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
-import java.text.SimpleDateFormat;
-
-import java.sql.*;
-// import java.sql.Connection;
-// import java.sql.ResultSet;
-// import java.sql.SQLException;
-// import java.sql.Statement;
-
+import java.util.Date;
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
+
+
+
+
+import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.analysis.Analyzer;
@@ -31,6 +35,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,10 +46,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+ 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
-import edu.ucla.cs.cs144.DbManager;
-import edu.ucla.cs.cs144.SearchRegion;
-import edu.ucla.cs.cs144.SearchResult;
+//import edu.ucla.cs.cs144.DbManager;
+//import edu.ucla.cs.cs144.SearchRegion;
+//import edu.ucla.cs.cs144.SearchResult;
 
 public class AuctionSearch implements IAuctionSearch {
 
@@ -62,7 +70,7 @@ public class AuctionSearch implements IAuctionSearch {
          * placed at src/edu/ucla/cs/cs144.
          *
          */
-	static final int MAX_RESULTS=2000000;
+	
 	public SearchResult[] basicSearch(String query, int numResultsToSkip, 
 			int numResultsToReturn) {
 		// TODO: Your code here!
@@ -71,17 +79,14 @@ public class AuctionSearch implements IAuctionSearch {
 			SearchEngine searchEngine = new SearchEngine();
 			topDocs=searchEngine.performSearch(query,numResultsToReturn+numResultsToSkip);
 			ScoreDoc[] scoreDocs=topDocs.scoreDocs;
-			System.out.println("ScoreDoc.length:"+scoreDocs.length);
-			SearchResult[] r=new SearchResult[Math.min(scoreDocs.length-numResultsToSkip,numResultsToReturn)];
+			SearchResult[] r=new SearchResult[numResultsToReturn];
 			for(int i=numResultsToSkip;i<scoreDocs.length;++i){
 				Document doc=searchEngine.getDocument(scoreDocs[i].doc);
 				String itemID=doc.get("ItemID");
 				String itemName=doc.get("ItemName");
-				SearchResult cur=new SearchResult(itemID,itemName);
-//				cur.show();
-				r[i-numResultsToSkip]=cur;
+				r[i-numResultsToSkip]=new SearchResult(itemID,itemName);
+				return r;
 			}
-			return r;
 		}catch (IOException ex){
 			ex.printStackTrace();
 		}catch (ParseException ex){
@@ -93,8 +98,26 @@ public class AuctionSearch implements IAuctionSearch {
 	public SearchResult[] spatialSearch(String query, SearchRegion region,
 			int numResultsToSkip, int numResultsToReturn) {
 		// TODO: Your code here!
-		//spatial search
-		HashSet<String> itemsWithin=new HashSet();
+		SearchResult[] r1=null;
+		try {
+			TopDocs topDocs=null;
+			SearchEngine searchEngine = new SearchEngine();
+			topDocs=searchEngine.performSearch(query,numResultsToReturn+numResultsToSkip);
+			ScoreDoc[] scoreDocs=topDocs.scoreDocs;
+			r1=new SearchResult[numResultsToReturn];
+			for(int i=numResultsToSkip;i<scoreDocs.length;++i){
+				Document doc=searchEngine.getDocument(scoreDocs[i].doc);
+				String itemID=doc.get("ItemID");
+				String itemName=doc.get("ItemName");
+				r1[i-numResultsToSkip]=new SearchResult(itemID,itemName);
+//				return r1;
+			}
+		}catch (IOException ex){
+			ex.printStackTrace();
+		}catch (ParseException ex){
+			ex.printStackTrace();
+		}
+
 		Connection conn=null;
 		double lx=region.getLx(),ly=region.getLy(),rx=region.getRx(),ry=region.getRy();
 		String spatialQuery="select ItemID,ItemName,AsText(Coordinate)" +
@@ -105,44 +128,9 @@ public class AuctionSearch implements IAuctionSearch {
 			conn=DbManager.getConnection(true);
 			Statement stmt=conn.createStatement();
 			ResultSet rs=stmt.executeQuery(spatialQuery);
-			while(rs.next()){
-				itemsWithin.add(rs.getString("ItemID"));
-			}
 		}catch (SQLException ex){
 			ex.printStackTrace();
 		}
-		//basic search
-		SearchResult[] r,r1=null;
-		try {
-			TopDocs topDocs=null;
-			SearchEngine searchEngine = new SearchEngine();
-			topDocs=searchEngine.performSearch(query,MAX_RESULTS);
-			ScoreDoc[] scoreDocs=topDocs.scoreDocs;
-			r1=new SearchResult[Math.min(scoreDocs.length,numResultsToReturn+numResultsToSkip)];
-			int count=0;
-			for(int i=0;i<scoreDocs.length;++i){
-				Document doc=searchEngine.getDocument(scoreDocs[i].doc);
-				String itemID=doc.get("ItemID");
-				String itemName=doc.get("ItemName");
-				if(itemsWithin.contains(itemID)){
-					r1[count++]=new SearchResult(itemID,itemName);
-					if(count==r1.length)break;
-				}
-			}
-			if(count<=numResultsToSkip)r=new SearchResult[0];
-			else{
-				r=new SearchResult[count-numResultsToSkip];
-				for(int i=numResultsToSkip;i<count;++i){
-					r[i-numResultsToSkip]=r1[i];
-				}
-			}
-			return r;
-		}catch (IOException ex){
-			ex.printStackTrace();
-		}catch (ParseException ex){
-			ex.printStackTrace();
-		}
-
 
 		return new SearchResult[0];
 	}
@@ -254,7 +242,7 @@ public class AuctionSearch implements IAuctionSearch {
 	public String echo(String message) {
 		return message;
 	}
-
+	
 	private List<String> getFirstLayer(String[] addName, ResultSet rs){
 		List<String> list = new ArrayList<>();
 		try{
@@ -288,5 +276,6 @@ public class AuctionSearch implements IAuctionSearch {
 		node.appendChild(doc.createTextNode(value));
 		return node;
 	}
+	
 
 }
