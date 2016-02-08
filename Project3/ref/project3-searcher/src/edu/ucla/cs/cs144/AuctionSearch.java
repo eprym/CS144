@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.File;
 import java.text.SimpleDateFormat;
 
-import java.sql.*;
-// import java.sql.Connection;
-// import java.sql.ResultSet;
-// import java.sql.SQLException;
-// import java.sql.Statement;
+//import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
@@ -41,6 +41,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import edu.ucla.cs.cs144.DbManager;
 import edu.ucla.cs.cs144.SearchRegion;
