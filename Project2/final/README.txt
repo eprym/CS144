@@ -14,7 +14,7 @@ Bids{(ItemID,BidderID,BidTime)->Amount};
 Categories{};
 
 For BCNF:
-Since all the left side of¡¡FDs are exactly the keys, all of the relations are in BCNF.
+Since all the left side of FDs are exactly the keys, all of the relations are in BCNF.
 
 For 4NF:
-Since all relations are in BCNF and there is not any nontrivial multivalue dependencies, all the relations are in 4NF.
+Since all relations are in BCNF and there is not any nontrivial multi-value dependencies, all the relations are in 4NF.
