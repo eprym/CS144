@@ -161,19 +161,22 @@ public class AuctionSearch implements IAuctionSearch {
 					"ItemLocationName", "Latitude", "Longitude", "Country", "Description"};
 			List<String> list = getFirstLayer(addName, rs);
 			String Started = rs.getTimestamp("Started").toString();
-			Started = formatDate(Started);
+			//Started = formatDate(Started);
 			String End = rs.getTimestamp("End").toString();
-			End = formatDate(Started);
+			//End = formatDate(Started);
 			String SellerID = rs.getString("SellerID");
 			
+			Statement stmt_bids = conn.createStatement();
 			String query_Bids = "select * from Bids where ItemID = " + itemId;
-			ResultSet rs_Bids = stmt.executeQuery(query_Bids);
+			ResultSet rs_Bids = stmt_bids.executeQuery(query_Bids);
 			
+			Statement stmt_categs = conn.createStatement();
 			String query_Categories = "select * from Categories where ItemID = " + itemId;
-			ResultSet rs_Categories = stmt.executeQuery(query_Categories);
+			ResultSet rs_Categories = stmt_categs.executeQuery(query_Categories);
 			
-			String query_Sellers = "select * from Bidders where UserID = " + SellerID;
-			ResultSet rs_Sellers = stmt.executeQuery(query_Sellers);
+			Statement stmt_sellers = conn.createStatement();
+			String query_Sellers = "select * from Sellers where UserID = '" + SellerID + "'";
+			ResultSet rs_Sellers = stmt_sellers.executeQuery(query_Sellers);
 			
 			DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
 	        DocumentBuilder icBuilder;
@@ -220,10 +223,12 @@ public class AuctionSearch implements IAuctionSearch {
 	        mainRootElement.appendChild(getItemElements(doc, "Started", Started));
 	        mainRootElement.appendChild(getItemElements(doc, "Ends", End));
 	        
-	        Element seller = doc.createElement("Seller");
-	        seller.setAttribute("UserID", rs_Sellers.getString("UserID"));
-	        seller.setAttribute("Rating", rs_Sellers.getString("Rating"));
-	        mainRootElement.appendChild(seller);
+	        while(rs_Sellers.next()){
+	        	Element seller = doc.createElement("Seller");
+	        	seller.setAttribute("UserID", rs_Sellers.getString("UserID"));
+	        	seller.setAttribute("Rating", rs_Sellers.getString("Rating"));
+	        	mainRootElement.appendChild(seller);
+	        }
 	        
 	        mainRootElement.appendChild(getItemElements(doc, "Description", list.get(10)));
 	        
