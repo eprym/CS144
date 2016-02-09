@@ -50,7 +50,7 @@ create table Items(ItemID VARCHAR(40) not null,
 create table Bids(ItemID VARCHAR(40) not null references Items(ItemID),
 	 			  BidderID VARCHAR(40) not null references Bidders(UserID),
 	 			  BidTime timestamp not null,
-	 			  Amount Integer not null,
+	 			  Amount decimal(8,2) not null,
 	 			  primary key (ItemID,BidderID,BidTime)
 	 			  );
 
