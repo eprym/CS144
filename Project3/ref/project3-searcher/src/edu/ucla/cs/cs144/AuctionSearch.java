@@ -160,14 +160,14 @@ public class AuctionSearch implements IAuctionSearch {
 			String[] addName = {"ItemID", "ItemName", "CurrentPrice", "BuyPrice", "FirstBid", "NOofBids",
 					"ItemLocationName", "Latitude", "Longitude", "Country", "Description"};
 			List<String> list = getFirstLayer(addName, rs);
-			String Started = rs.getTimestamp("Started").toString();
-			//Started = formatDate(Started);
-			String End = rs.getTimestamp("End").toString();
-			//End = formatDate(Started);
+			String Started = rs.getTimestamp("Started").toString().split("\\.")[0];
+			Started = formatDate(Started);
+			String End = rs.getTimestamp("End").toString().split("\\.")[0];
+			End = formatDate(End);
 			String SellerID = rs.getString("SellerID");
 			
 			Statement stmt_bids = conn.createStatement();
-			String query_Bids = "select * from Bids where ItemID = " + itemId;
+			String query_Bids = "select * from Bids where ItemID = " + itemId + " order by BidTime";
 			ResultSet rs_Bids = stmt_bids.executeQuery(query_Bids);
 			
 			Statement stmt_categs = conn.createStatement();
@@ -190,29 +190,32 @@ public class AuctionSearch implements IAuctionSearch {
 	        while(rs_Categories.next()){
 	        	mainRootElement.appendChild(getItemElements(doc, "Category", rs_Categories.getString("Category")));
 	        }
-	        mainRootElement.appendChild(getItemElements(doc, "Currently", list.get(2)));
-	        mainRootElement.appendChild(getItemElements(doc, "First_Bid", list.get(4)));
-	        if(list.get(3) != null)	mainRootElement.appendChild(getItemElements(doc, "Buy_Price", list.get(3)));
+	        if(list.get(2) != null)	mainRootElement.appendChild(getItemElements(doc, "Currently", "$"+list.get(2)));
+	        if(list.get(4) != null)	mainRootElement.appendChild(getItemElements(doc, "First_Bid", "$"+list.get(4)));
+	        if(list.get(3) != null)	mainRootElement.appendChild(getItemElements(doc, "Buy_Price", "$"+list.get(3)));
 	        mainRootElement.appendChild(getItemElements(doc, "Number_of_Bids", list.get(5)));
 	        
 	        Element bids = doc.createElement("Bids");
 	        while(rs_Bids.next()){
 	        	String bidderID = rs_Bids.getString("BidderID");
-	        	String query_bidder = "select * from Bidders where UserID = " + bidderID;
-	        	ResultSet rs_Bidders = stmt.executeQuery(query_bidder);
+	        	String query_bidder = "select * from Bidders where UserID = '" + bidderID + "'";
+	        	Statement stmt_bidders = conn.createStatement();
+	        	ResultSet rs_Bidders = stmt_bidders.executeQuery(query_bidder);
+	        	rs_Bidders.next();
 	        	Element bidder = doc.createElement("Bidder");
 	        	bidder.setAttribute("UserID", rs_Bidders.getString("UserID"));
 	        	bidder.setAttribute("Rating", rs_Bidders.getString("Rating"));
-	        	if(rs_Bidders.getString("Location") != null){
-	        		bidder.appendChild(getItemElements(doc, "Location", rs_Bidders.getString("Location")));
+	        	if(rs_Bidders.getString("UserLocationName") != null){
+	        		bidder.appendChild(getItemElements(doc, "Location", rs_Bidders.getString("UserLocationName")));
 	        	}
 	        	if(rs_Bidders.getString("Country") != null){
 	        		bidder.appendChild(getItemElements(doc, "Country", rs_Bidders.getString("Country")));
 	        	}
 	        	bids.appendChild(bidder);
-	        	bids.appendChild(getItemElements(doc, "Time", rs_Bids.getString("Time")));
-	        	bids.appendChild(getItemElements(doc, "Amount", rs_Bids.getString("Amount")));
+	        	bids.appendChild(getItemElements(doc, "Time", formatDate(rs_Bids.getTimestamp("BidTime").toString().split("\\.")[0])));
+	        	bids.appendChild(getItemElements(doc, "Amount", rs_Bids.getString("$" + "Amount")));
 	        }
+	        mainRootElement.appendChild(bids);
 	        
 	        Element location = (Element)getItemElements(doc, "Location", list.get(6));
 	        if(list.get(7) != null)	location.setAttribute("Latitude", list.get(7));
@@ -234,6 +237,7 @@ public class AuctionSearch implements IAuctionSearch {
 	        
 	        Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             DOMSource source = new DOMSource(doc);
             StringWriter writer = new StringWriter();
             transformer.transform(source, new StreamResult(writer));
