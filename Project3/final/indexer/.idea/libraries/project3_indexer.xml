@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="project3-indexer">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/project3-indexer.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

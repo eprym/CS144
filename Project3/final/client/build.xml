@@ -1,0 +1,38 @@
+<!-- NOTE: This build script relies on the environment variable AXIS2_HOME,
+which must point to where you've unzipped axis2-1.1.1.zip -->
+ 
+<project basedir="." default="run" name="project3-client">
+	<property name="obj-dir" value="bin" />
+	<property name="lib-dir" value="lib" />
+	<property name="src-dir" value="src" />
+	<property name="debuglevel" value="source,lines,vars"/>
+	<property environment="env"/>
+	<path id="classpath">
+		<fileset dir="${lib-dir}" includes="**/*.jar" />
+		<fileset dir="${env.AXIS2_HOME}/lib" includes="**/*.jar" />
+		<pathelement location="${obj-dir}"/>
+	</path>
+	
+	<target name="init">
+		<mkdir dir="${obj-dir}" />
+		<mkdir dir="${lib-dir}" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${obj-dir}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<echo message="${ant.project.name}: ${ant.file}"/>
+		<javac debug="true" debuglevel="${debuglevel}" includeantruntime="false" srcdir="${src-dir}" destdir="${obj-dir}" includes="edu/ucla/cs/cs144/*.java">
+			<classpath refid="classpath"/>
+		</javac>
+	</target>    
+
+	<target name="run" depends="compile">
+		<java classname="edu.ucla.cs.cs144.AuctionSearchTest" failonerror="true" fork="yes">
+			<classpath refid="classpath"/>
+		</java>
+	</target>
+
+</project>
