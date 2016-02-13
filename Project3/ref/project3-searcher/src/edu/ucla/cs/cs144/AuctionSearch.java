@@ -211,9 +211,11 @@ public class AuctionSearch implements IAuctionSearch {
 	        	if(rs_Bidders.getString("Country") != null){
 	        		bidder.appendChild(getItemElements(doc, "Country", rs_Bidders.getString("Country")));
 	        	}
-	        	bids.appendChild(bidder);
-	        	bids.appendChild(getItemElements(doc, "Time", formatDate(rs_Bids.getTimestamp("BidTime").toString().split("\\.")[0])));
-	        	bids.appendChild(getItemElements(doc, "Amount", rs_Bids.getString("$" + "Amount")));
+	        	Element bid = doc.createElement("Bid");
+	        	bid.appendChild(bidder);
+	        	bid.appendChild(getItemElements(doc, "Time", formatDate(rs_Bids.getTimestamp("BidTime").toString().split("\\.")[0])));
+	        	bid.appendChild(getItemElements(doc, "Amount", "$"+rs_Bids.getString("Amount")));
+	        	bids.appendChild(bid);
 	        }
 	        mainRootElement.appendChild(bids);
 	        
@@ -236,6 +238,7 @@ public class AuctionSearch implements IAuctionSearch {
 	        mainRootElement.appendChild(getItemElements(doc, "Description", list.get(10)));
 	        
 	        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+	        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             DOMSource source = new DOMSource(doc);
