@@ -1,0 +1,39 @@
+<%@ page import="edu.ucla.cs.cs144.SearchResult,java.util.*" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: Kami
+  Date: 2016/2/24
+  Time: 11:25
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+  <title>There is <%=((Map<String,String>)request.getAttribute("itemResults")).keySet().size() %> items</title>
+</head>
+<body>
+<form action="search">
+  What else are you looking for?<input type="text" name="q">
+  <input type="submit" value="Search">
+</form>
+<h2>There is <%=((Map<String,String>)request.getAttribute("itemResults")).keySet().size() %> items:</h2>
+<%
+	//int len=request.getAttribute("itemResults").length;
+	Map<String,String> itemResults=(Map<String,String>)request.getAttribute("itemResults");
+%>
+<%
+  for(String id:itemResults.keySet()){
+%>
+  <a href="http://localhost:1448/eBay/search?q=<%=itemResults.get(id)%>"><%=id+","+itemResults.get(id)%></a><br>
+  <%
+    //out.println(id+","+itemResults.get(id));
+  %>
+<%
+  }
+%>
+<h2>
+  <a href="http://localhost:1448/eBay/search?q=<%=request.getParameter("q")%>&numResultToSkip=<%=request.getAttribute("numResultToSkip")%>&action=prev">PREV</a>
+  <a href="http://localhost:1448/eBay/search?q=<%=request.getParameter("q")%>&numResultToSkip=<%=request.getAttribute("numResultToSkip")%>&action=next">NEXT</a>
+</h2>
+</body>
+</html>
