@@ -4,15 +4,13 @@
 </head>
 <body>
 	<h1>eBay Search Web Site </h1> 
+	<a href= "keywordSearch.html">Search with Keywords</a><br>
+	<br>
 	<form action = "/eBay/item">
 			Item ID : <input type="text" name="id">
 			<input type="submit" value="Search">
 	</form>
 
-	<form action="/eBay/search">
-  		Keyword Search : <input type="text" name="q">
-  		<input type="submit" value="Search">
-	</form>
 
 	<%
 		String XMLdata = (String)request.getAttribute("XMLdata");
