@@ -1,7 +1,10 @@
-function AutoSuggestControl(oTextbox, oProvider){
+//author : Liqiang Yu
+
+function AutoSuggestControl(oTextbox){
 	this.cur = -1;
 	this.layer = null;
-	this.provider = oProvider;
+	this.xmlHttp = new XMLHttpRequest();
+	//this.provider = oProvider;
 	this.textbox = oTextbox;
 	this.init();
 }
@@ -26,13 +29,14 @@ AutoSuggestControl.prototype.init = function(){
 };
 
 AutoSuggestControl.prototype.createDropDown = function(){
+
+	var oThis = this;
+
 	this.layer = document.createElement("div");
 	this.layer.className = "suggestions";
 	this.layer.style.visibility = "hidden";
 	this.layer.style.width = this.textbox.offsetWidth;
-	document.body.appendChild(this.layer);
 
-	var oThis = this;
 	this.layer.onmousedown = this.layer.onmouseup = 
 	this.layer.onmouseover = function(oEvent){
 		oEvent = oEvent || window.event;
@@ -49,6 +53,7 @@ AutoSuggestControl.prototype.createDropDown = function(){
 			oThis.textbox.focus();
 		}
 	};
+	document.body.appendChild(this.layer);
 };
 
 AutoSuggestControl.prototype.getLeft = function(){
@@ -68,25 +73,37 @@ AutoSuggestControl.prototype.getTop = function(){
 	var iTop = 0;
 
 	while(oNode.tagName != "BODY"){
-		iTop+= oNode.offsetLeft;
+		iTop+= oNode.offsetTop;
 		oNode = oNode.offsetParent;
 	}
 
 	return iTop;
 };
 
-AutoSuggestControl.prototype.autosuggest = function(xmlHttp, bTypehead){
-	if(xmlHttp.readyState === 4){
-		var aSuggestions = [];
-		var suggs = xmlHttp.responseXML.getElementsByTagName('CompleteSuggestion');
-		for(var i=0; i<sugs.length; i++){
-			var text = suggs[i].childNodes[0].getAttribute("data");
-			aSuggestions.push(text);
-			if(aSuggestions.length > 0)	this.showSuggestions(aSuggestions);
-			if(bTypehead)	this.typeAhead(aSuggestions[0]);
-			else this.hideSuggestions();
-		}
+AutoSuggestControl.prototype.requestSuggestions = function(bTypehead){
+	var content = this.textbox.value;
+	if(content !== ""){
+		var request = "suggest?q=" + encodeURI(content);
+		this.xmlHttp.open("GET", request);
+		this.xmlHttp.onreadystatechange = this.autosuggest(this, bTypehead);
+		this.xmlHttp.send(null);
 	}
+};
+
+AutoSuggestControl.prototype.autosuggest = function(oThis, bTypehead){
+	return function(){
+		if(oThis.xmlHttp.readyState == 4){
+			var aSuggestions = [];
+			var suggs = oThis.xmlHttp.responseXML.getElementsByTagName('CompleteSuggestion');
+			for(var i=0; i<suggs.length; i++){
+				var text = suggs[i].childNodes[0].getAttribute("data");
+				aSuggestions.push(text);
+			}
+			if(aSuggestions.length > 0)	oThis.showSuggestions(aSuggestions);
+			if(bTypehead)	oThis.typeAhead(aSuggestions[0]);
+			else oThis.hideSuggestions();
+		}
+	};
 };
 
 AutoSuggestControl.prototype.showSuggestions = function(aSuggestions){
@@ -94,7 +111,7 @@ AutoSuggestControl.prototype.showSuggestions = function(aSuggestions){
 	this.layer.innerHTML = "";
 	for(var i=0; i<aSuggestions.length; i++){
 		oDiv = document.createElement("div");
-		oDiv.appendChild(document.createElement("div"));
+		oDiv.appendChild(document.createTextNode(aSuggestions[i]));
 		this.layer.appendChild(oDiv);
 	}
 	this.layer.style.left = this.getLeft() + "px";
@@ -109,10 +126,10 @@ AutoSuggestControl.prototype.hideSuggestions = function(){
 AutoSuggestControl.prototype.handleKeyUp = function(oEvent){
 	var keycode = oEvent.keyCode;
 	if(keycode === 8 || keycode === 46){
-		this.provider.requestSuggestions(this, false);
+		this.requestSuggestions(false);
 	}
-	else if (keycode < 32 || (keycode >= 33 && keycode <= 46) || (keycode >= 112 && keycode <= 123)){}
-	else this.provider.requestSuggestions(this, true);
+	else if (keycode <= 32 || (keycode >= 33 && keycode <= 46) || (keycode >= 112 && keycode <= 123)){}
+	else this.requestSuggestions(true);
 };
 
 AutoSuggestControl.prototype.typeAhead = function(sSuggestion){

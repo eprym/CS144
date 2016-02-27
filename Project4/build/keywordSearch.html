@@ -1,10 +1,20 @@
 <html>
+	<head>
+		<script type="text/javascript" src="autosuggest.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="autosuggest.css" />
+        <script type="text/javascript">
+            window.onload = function () {
+                var oTextbox = new AutoSuggestControl(document.getElementById("input_txt"));
+          };
+        </script>
+	</head>
 	<body>
 		<h1>eBay Search Web Site </h1>
 		<a href= "getItem.html">Search with an ItemID</a><br>
 		<br>
 		<form action="/eBay/search">
-            Keyword Search : <input type="text" name="q">
+            Keyword Search : <input type="text" id="input_txt" name="q">
             <input type="submit" value="Search">
         </form>
 	</body>

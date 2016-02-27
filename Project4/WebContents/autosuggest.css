@@ -8,6 +8,7 @@ div.suggestions {
 div.suggestions div {
     cursor: default;
     padding: 0px 3px;
+    background-color: #FFFFFF;
 }
 
 div.suggestions div.current {

@@ -44,7 +44,7 @@ public class ProxyServlet extends HttpServlet implements Servlet {
 
 
         	response.setContentType("text/xml");
-        	response.setStatus(HttpServletResponse.SC_OK);
+        	response.setStatus(200);
         	os=response.getOutputStream();
         	// os.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
         	String line=null;

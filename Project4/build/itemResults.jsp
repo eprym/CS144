@@ -10,6 +10,14 @@
 <html>
 <head>
   <title>There is <%=((Map<String,String>)request.getAttribute("itemResults")).keySet().size() %> items</title>
+  <script type="text/javascript" src="autosuggest.js"></script>
+  <script type="text/javascript" src="suggestions.js"></script>
+  <link rel="stylesheet" type="text/css" href="autosuggest.css" />
+  <script type="text/javascript">
+        window.onload = function () {
+            var oTextbox = new AutoSuggestControl(document.getElementById("input_txt"), new SuggestionProvider()); 
+        }
+  </script>
 </head>
 <body>
 <h1>eBay Search Web Site </h1>
@@ -19,7 +27,7 @@
 
 
 <form action="search">
-  Keyword Search : <input type="text" name="q">
+  Keyword Search : <input type="text" id="input_txt" name="q">
   <input type="submit" value="Search">
 </form>
 
