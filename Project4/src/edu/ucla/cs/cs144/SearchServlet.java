@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.Servlet;
@@ -48,7 +49,7 @@ public class SearchServlet extends HttpServlet implements Servlet {
        		itemResults=AuctionSearchClient.basicSearch(itemID,numResultToSkip,numResultToReturn);
        	}
         
-        Map<String,String> resultMap=new HashMap<>();
+        Map<String,String> resultMap=new LinkedHashMap<>();
         for(SearchResult r:itemResults){
         	resultMap.put(r.getItemId(),r.getName());
        	}

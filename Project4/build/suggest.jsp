@@ -30,7 +30,7 @@
   Keyword Search : <input type="text" id="input_txt" name="q">
   <input type="submit" value="Search">
 </form>
-<p>xml:<%=request.getAttribute("suggests")%></p>
+<p>target URL:<%=request.getAttribute("targetUrl")%></p>
 <%
 	//int len=request.getAttribute("itemResults").length;
 	out.println(request.getAttribute("suggests"));

@@ -100,7 +100,7 @@ AutoSuggestControl.prototype.autosuggest = function(oThis, bTypehead){
 				aSuggestions.push(text);
 			}
 			if(aSuggestions.length > 0)	oThis.showSuggestions(aSuggestions);
-			if(bTypehead)	oThis.typeAhead(aSuggestions[0]);
+			//if(bTypehead)	oThis.typeAhead(aSuggestions[0]);
 			else oThis.hideSuggestions();
 		}
 	};
@@ -129,7 +129,7 @@ AutoSuggestControl.prototype.handleKeyUp = function(oEvent){
 		this.requestSuggestions(false);
 	}
 	else if (keycode <= 32 || (keycode >= 33 && keycode <= 46) || (keycode >= 112 && keycode <= 123)){}
-	else this.requestSuggestions(true);
+	else this.requestSuggestions(false);
 };
 
 AutoSuggestControl.prototype.typeAhead = function(sSuggestion){
@@ -154,7 +154,7 @@ AutoSuggestControl.prototype.selectRange = function(iStart, iLen){
 
 AutoSuggestControl.prototype.nextSuggestion = function(){
 	var cSuggestionNodes = this.layer.childNodes;
-	if(cSuggestionNodes.length > 0 || this.cur < cSuggestionNodes.length-1){
+	if(cSuggestionNodes.length > 0 && this.cur < cSuggestionNodes.length-1){
 		var oNode = cSuggestionNodes[++this.cur];
 		this.highlightSuggestion(oNode);
 		this.textbox.value = oNode.firstChild.nodeValue;
@@ -163,7 +163,7 @@ AutoSuggestControl.prototype.nextSuggestion = function(){
 
 AutoSuggestControl.prototype.previousSuggestion = function(){
 	var cSuggestionNodes = this.layer.childNodes;
-	if(cSuggestionNodes.length > 0 || this.cur > 0){
+	if(cSuggestionNodes.length > 0 && this.cur > 0){
 		var oNode = cSuggestionNodes[--this.cur];
 		this.highlightSuggestion(oNode);
 		this.textbox.value = oNode.firstChild.nodeValue;

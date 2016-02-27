@@ -94,15 +94,15 @@
 			  	codeLatLng(function(latlng0){
 			  		if(latlng0){
 			  			myOptions = { 
-			      			zoom: 14, // default is 8  
+			      			zoom: 10, // default is 8  
 			      			center: latlng0, 
 			     			mapTypeId: google.maps.MapTypeId.ROADMAP 
 			  			}; 
 			  		}
 			  		else{
-			  			latlng0=new google.maps.LatLng(0.0,0.0);
+			  			latlng0=new google.maps.LatLng(0.01,0.01);
 			  			myOptions = { 
-			      			zoom: 1, // default is 8 
+			      			zoom: 2, // default is 8 
 			      			center: latlng0, 
 			     			mapTypeId: google.maps.MapTypeId.ROADMAP 
 			  			}; 
@@ -122,12 +122,12 @@
 
 			function codeLatLng(callback) {
 				// var latlng = new google.maps.LatLng(40.730885,-73.997383);
-				var address="%^&";//<%= xobj.Location%>";
+				var address="<%= xobj.Location%>";
 				var lat="<%= xobj.Latitude%>";
 				var lng="<%= xobj.Longitude%>";
 				
 				if (geocoder) {
-					if(lat && lng && ""){
+					if(lat && lng ){
 						var latlng = new google.maps.LatLng(lat,lng);
 						callback(latlng);
 					}
@@ -142,6 +142,7 @@
 			    	        		//alert("No results found");
 			        			}
 			    			} else {
+			    					callback("");
 			     	     		//alert("Geocoder failed due to: " + status);
 			      			}
 			 			});
@@ -153,6 +154,9 @@
 			}
 			</script>
 		</div>
+	</div>
+	<div id="action">
+
 	</div>
 	<div id="footer">© Copyright by University of California, Los Angeles (UCLA)</div>
 </body>

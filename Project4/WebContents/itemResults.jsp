@@ -31,7 +31,7 @@
   <input type="submit" value="Search">
 </form>
 
-<h2>There is <%=((Map<String,String>)request.getAttribute("itemResults")).keySet().size() %> items:</h2>
+
 <%
 	//int len=request.getAttribute("itemResults").length;
 	Map<String,String> itemResults=(Map<String,String>)request.getAttribute("itemResults");
