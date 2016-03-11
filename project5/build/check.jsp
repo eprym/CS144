@@ -16,7 +16,7 @@
 			<a href= "index.html">Back to Welcome Page</a><br>
 			
 
-
+			<h1>Credit Card Input Page</h1>
 			<%
 			// String XMLdata = (String)request.getAttribute("XMLdata");
 			// if(XMLdata.equals("")){out.println("Invalid ItemID");return;}
@@ -32,11 +32,16 @@
 				<p>ItemID : <%= xobj.ItemID%> </p>
 				<p>ItemName : <%= xobj.Name%> </p>
 				<p>Buy Price: <%= xobj.BuyPrice%></p>
-				<form method="post" action = "https://localhost:8443/eBay/confirm">
+				<% String url="https://"+request.getServerName()+":8443"+request.getContextPath()+"/confirm";%>
+				<form method="post" action = <%=url%>>
 					Credit Card: <input type="text" name="cardNum">
 					<input type="hidden" name="itemID" value=<%=xobj.ItemID%>>
 					<input type="submit" value="submit">
 				</form>
+				<!-- <p>Server Name:<%=request.getServerName()%></p>
+				<p>Server Port:<%=request.getServerPort()%></p>
+				<p>Context Path:<%=request.getContextPath()%></p>
+				<p>Is secure:<%=request.isSecure()%></p> -->
 			<%}%>
 		</div>
 	</div>
