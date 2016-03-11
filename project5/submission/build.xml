@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project basedir="." default="build" name="Project 4">
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="build-dir" location="build" />
+    <property name="lib-dir" location="lib" />
+    <property name="src-dir" location="src" />
+    <property name="war-name" value="eBay" />
+    <property environment="env"/>
+    <path id="classpath">
+        <fileset dir="${lib-dir}" includes="**/*.jar" />
+        <fileset dir="${env.CATALINA_HOME}/lib" includes="**/*.jar" />
+        <fileset dir="${env.AXIS2_HOME}/lib" includes="**/*.jar" />
+        <pathelement location="${obj-dir}"/>
+    </path>
+
+
+    <target name="init">
+        <mkdir dir="${build-dir}" />
+        <mkdir dir="${build-dir}/WEB-INF" />
+        <mkdir dir="${build-dir}/WEB-INF/classes" />
+    </target>
+
+    <target name="clean">
+        <delete dir="${build-dir}" />
+    </target>
+
+    <target name="compile" depends="init">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" includeantruntime="false" srcdir="${src-dir}" destdir="${build-dir}/WEB-INF/classes" includes="**/*.java">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>    
+
+    <target name="build" depends="clean">		
+        <echo message="${ant.project.name}: ${war-name}"/>
+
+        <!-- build the class files first -->
+        <antcall target="compile" />
+
+        <!-- copy necessary files to include in the war file -->
+        <mkdir dir="${build-dir}/WEB-INF/lib" />
+        <copy todir="${build-dir}/WEB-INF/lib" preservelastmodified="true" overwrite="true">
+            <fileset dir="${lib-dir}" />
+        </copy>
+        <copy todir="${build-dir}" preservelastmodified="true" overwrite="true">
+            <fileset dir="WebContents" />
+        </copy>
+	
+        <!-- create the war file -->
+        <jar basedir="${build-dir}" destfile="${build-dir}/${war-name}.war"/>
+    </target>
+
+    <target name="deploy">		
+        <delete dir="${env.CATALINA_BASE}/webapps/${war-name}" />
+        <delete dir="${env.CATALINA_BASE}/work/Catalina/localhost/${war-name}" />
+        <copy file="${build-dir}/${war-name}.war" todir="${env.CATALINA_BASE}/webapps" preservelastmodified="true" overwrite="true" />
+    </target>
+
+</project>
